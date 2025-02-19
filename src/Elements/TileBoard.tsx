@@ -7,7 +7,7 @@ import { PieceModel } from "../Models/PieceModel";
 
 interface Slot{
     position: Position;
-    piece: PieceModel;
+    piece?: PieceModel;
     occupied: boolean;
 }
 
@@ -35,14 +35,14 @@ export default function TileBoard() {
                                                 {position: {id: 6, x: 220, y: 220}, piece: {id: 6, location: 6}, occupied: true},
                                                 {position: {id: 7, x: 330, y: 220}, piece: {id: 7, location: 7}, occupied: true},
                                                 {position: {id: 8, x: 440, y: 220}, piece: {id: 8, location: 8}, occupied: true},      
-                                                {position: {id: 9, x: 110, y: 330}, piece: {id: 9, location: 9}, occupied: true},
+                                                {position: {id: 9, x: 110, y: 330},  piece: {id: 9, location: 9}, occupied: true},
                                                 {position: {id: 10, x: 220, y: 330}, piece: {id: 10, location: 10}, occupied: true},        
                                                 {position: {id: 11, x: 330, y: 330}, piece: {id: 11, location: 11}, occupied: true},
                                                 {position: {id: 12, x: 440, y: 330}, piece: {id: 12, location: 12}, occupied: true},       
                                                 {position: {id: 13, x: 110, y: 440}, piece: {id: 13, location: 13}, occupied: true},        
                                                 {position: {id: 14, x: 220, y: 440}, piece: {id: 14, location: 14}, occupied: true},
                                                 {position: {id: 15, x: 330, y: 440}, piece: {id: 15, location: 15}, occupied: true},
-                                                {position: {id: 16, x: 440, y: 440}, piece: {id: 16, location: 16}, occupied: true}
+                                                {position: {id: 16, x: 440, y: 440}, occupied:false}
     ]);
    
     const randomizePieces = () =>{
@@ -99,23 +99,29 @@ export default function TileBoard() {
         <Stage width={880} height={880}>
             <Layer>
                 <Rect x={100} y={100} width={450} height={450} fill="gray" />
-                 {tilePositions.map((position) => 
-                    <Group>
+                 {/* {tilePositions.map((position) => 
+                    
                                         <Rect width={100} height={100} 
                                             x={position.x} 
                                             y={position.y} 
                                             fill={"green"}/>   
-                                        {/* <Piece key = {position.id} location={pieces[3].location} imageString={position.id.toString()} />  */}
-
-                    </Group>
-                         
-                 )}
+      
+                 )} */}
                    
+                   {board.map((slot) =>       
+                    <Group key = {slot.position.id}>                                  
+                        <Rect key = {slot.position.id +15} width={100} height={100} 
+                        x={slot.position.x} 
+                        y={slot.position.y} 
+                        fill={slot.occupied ? "green" : "red"}/>                 
+                        { slot.piece && <Piece key = {slot.piece?.id + 25}  location={slot.piece.location } imageString={slot.piece.id.toString()} emptyLocation = {16}/> }
+                        </Group> 
+                    )}
                     
-                {pieces.map((piece) =>                                         
+                {/* {pieces.map((piece) =>                                         
                         <Piece key = {piece.id} location={piece.location} imageString={piece.location.toString()} emptyLocation = {16}/>                 
                     
-                    )} 
+                    )}  */}
              
             </Layer>
         </Stage>
