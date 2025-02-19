@@ -1,4 +1,5 @@
 export interface Position {
     id: number,    
-    occupied: boolean
+    x: number,
+    y: number
 }
