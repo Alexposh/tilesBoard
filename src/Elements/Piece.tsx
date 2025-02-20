@@ -31,7 +31,7 @@ export default function PieceElement({location, imageString, emptyLocation}: {lo
 
     const handleClick = () => {
         console.log("Click on piece " );
-        setPlacing({x:440, y: 440});
+        setPlacing({x:positionOfPiece.x *110, y: positionOfPiece.y *110});
 
     }
     
