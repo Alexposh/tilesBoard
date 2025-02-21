@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { Image } from 'react-konva';
+import { Position } from '../Models/types';
 
 
 interface PlacingPlace{
@@ -8,15 +9,15 @@ interface PlacingPlace{
     y: number;
 }
 
-export default function PieceElement({location, imageString, emptyLocation}: {location: number, imageString: string, emptyLocation: number}){
+export default function PieceElement({piece, imageString,  getPiecePosition}: {piece: { id: number, location: number } , imageString: string, getPiecePosition: Function}){
     
     
     const [image, setImage] = useState<HTMLImageElement | null>(null);
     const stringForImage = imageString + ".png";
 
     const positionOfPiece: PlacingPlace = {
-        x:  location % 4 == 1 ? 1 : location % 4 == 2 ? 2 : location % 4 == 3 ? 3 : 4,
-        y: location <= 4 ? 1 : location <= 8 ? 2 : location <= 12 ? 3 : location <= 16 ? 4 : 2
+        x:  piece.location % 4 == 0 ? 4 : piece.location % 4 == 1 ? 1 : piece.location % 4 == 2 ? 2 : piece.location % 4 == 3 ? 3 : 4,
+        y: piece.location <= 4 ? 1 : piece.location <= 8 ? 2 : piece.location <= 12 ? 3 : piece.location <= 16 ? 4 : 2
     };
 
     const [placing, setPlacing] = useState({x:positionOfPiece.x *110, y: positionOfPiece.y *110});
@@ -27,12 +28,15 @@ export default function PieceElement({location, imageString, emptyLocation}: {lo
     img.onload = () => setImage(img);
     }, [stringForImage]);
 
+    
 
-
-    const handleClick = () => {
-        console.log("Click on piece " );
-        setPlacing({x:positionOfPiece.x *110, y: positionOfPiece.y *110});
-
+    const handleClick = (e) => {
+        let locationOfClickedPiece: Position = {id: piece.id, x: e.target.attrs.x, y: e.target.attrs.y};
+        // console.log("location of clicked piece x: " + locationOfClickedPiece.x + " and y: " + locationOfClickedPiece.y);
+        getPiecePosition(locationOfClickedPiece);
+    }
+    const handlePieceMove = (emptyLocation: Position) => {
+        setPlacing({x:emptyLocation.x, y: emptyLocation.y});
     }
     
     return(
@@ -40,7 +44,18 @@ export default function PieceElement({location, imageString, emptyLocation}: {lo
        
         <Image width={95} height={95} 
                 position={{x: placing.x, y: placing.y}}
-                image={image || undefined} onClick={handleClick}/>
+                image={image || undefined} onClick={handleClick}
+                // draggable 
+                                // onDragStart={() => {
+                                //     console.log("drag start");
+
+                                // } }
+        
+                                // onDragEnd={() => {
+                                //     console.log("drag end");
+                                //     handlePieceMove(emptyLocation);
+                                // } }
+                                />
     
     </>
 )
