@@ -1,7 +1,7 @@
 
 export interface PieceModel {
     id: number,
-    location: number
+    
 }
 
 export interface Position {
