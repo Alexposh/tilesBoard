@@ -13,3 +13,8 @@ export interface Slot {
     position: Position;
     piece: PieceModel;   
 }
+
+export interface LegalMove {
+    from: Position;
+    to: Position[];
+}
