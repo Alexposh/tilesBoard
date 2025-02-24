@@ -40,27 +40,47 @@ const generateBoard = (tilePositions: Position[], pieces: PieceModel[]) => {
     return updatedBoard;
 }
 
-const legalMoves:LegalMove[] = [
-    { from: tilePositions[0], to: [tilePositions[1], tilePositions[4]] },
-    { from: tilePositions[3], to: [tilePositions[2], tilePositions[7]] },    
-    { from: tilePositions[12], to: [tilePositions[8], tilePositions[13]] },
-    { from: tilePositions[15], to: [tilePositions[11], tilePositions[16]] },
+// const legalMoves:LegalMove[] = [
+//     { from: 1, to: [2, 5] },
+//     { from: 4, to: [3, 8] },    
+//     { from: 13, to: [9, 14] },
+//     { from: 16, to: [12, 15] },
 
-    { from: tilePositions[1], to: [tilePositions[0], tilePositions[2], tilePositions[5]] }, 
-    { from: tilePositions[2], to: [tilePositions[1], tilePositions[3], tilePositions[6]] },
-    { from: tilePositions[4], to: [tilePositions[0], tilePositions[5], tilePositions[8]] },
-    { from: tilePositions[7], to: [tilePositions[3], tilePositions[6], tilePositions[11]] },
-    { from: tilePositions[8], to: [tilePositions[4], tilePositions[9], tilePositions[12]] },
-    { from: tilePositions[11], to: [tilePositions[7], tilePositions[10], tilePositions[15]] },
-    { from: tilePositions[13], to: [tilePositions[9], tilePositions[12], tilePositions[14]] },
-    { from: tilePositions[14], to: [tilePositions[10], tilePositions[13], tilePositions[16]] },
+//     { from: 2, to: [1, 3, 6] }, 
+//     { from: 3, to: [2, 2, 7] },
+//     { from: 5, to: [1, 6, 9] },
+//     { from: 8, to: [4, 7, 12] },
+//     { from: 9, to: [5, 10, 13] },
+//     { from: 12, to: [8, 11, 16] },
+//     { from: 14, to: [10, 13, 15] },
+//     { from: 15, to: [11, 14, 16] },
 
-    { from: tilePositions[5], to: [tilePositions[1], tilePositions[4], tilePositions[6], tilePositions[9]] }, 
-    { from: tilePositions[6], to: [tilePositions[2], tilePositions[5], tilePositions[7], tilePositions[10]] },
-    { from: tilePositions[9], to: [tilePositions[5], tilePositions[8], tilePositions[10], tilePositions[13]] },    
-    { from: tilePositions[10], to: [tilePositions[6], tilePositions[9], tilePositions[11], tilePositions[14]] },
-    ]
-    ;
+//     { from: 6, to: [2, 5, 7, 10] }, 
+//     { from: 7, to: [3, 6, 8, 11] },
+//     { from: 10, to: [6, 9, 11, 14] },    
+//     { from: 11, to: [7, 10, 12, 15] },
+//     ];
+
+    const legalMoves:LegalMove[] = [
+        { from: 0, to: [1, 4] },
+        { from: 3, to: [2, 7] },    
+        { from: 12, to: [8, 13] },
+        { from: 15, to: [11, 14] },
+    
+        { from: 1, to: [0, 2, 5] }, 
+        { from: 2, to: [1, 3, 6] },
+        { from: 4, to: [0, 5, 8] },
+        { from: 7, to: [3, 6, 11] },
+        { from: 8, to: [4, 9, 12] },
+        { from: 11, to: [7, 10, 15] },
+        { from: 13, to: [9, 12, 14] },
+        { from: 14, to: [10, 13, 15] },
+    
+        { from: 5, to: [1, 4, 6, 9] }, 
+        { from: 6, to: [2, 5, 7, 10] },
+        { from: 9, to: [5, 8, 10, 13] },    
+        { from: 10, to: [6, 9, 11, 14] },
+        ];
 
 const canMoveToPlaces:string[] = [  "from 1 can move to 2 and 5",
                                     "from 4 can move to 3 and 8",
@@ -99,18 +119,39 @@ export default function TileBoard() {
     const [ongoingGamePieces, setOngoingGamePieces] = useState<PieceModel[]>(initialPieces);
 
     const handleClickOfPiece = (slot: Slot) => {
-        if (slot.piece && slot.piece.id !== 16) {
+        const positionOfClickedPiece = slot.position.id -1;   
+        console.log(positionOfClickedPiece); 
+        const legalMovesOfClickedPiece = legalMoves.find((move) => move.from === positionOfClickedPiece);
+        legalMovesOfClickedPiece && console.log(legalMovesOfClickedPiece.to);
+
+       
+        
+        if (legalMovesOfClickedPiece && slot.piece.id !== 16) {
             const pieceThatWasClicked = slot.piece;
             const piece16 = ongoingGamePieces.find((piece) => piece.id === 16);
             const indexOfPieceClicked = ongoingGamePieces.indexOf(pieceThatWasClicked!);
             const indexOfPiece16 = ongoingGamePieces.indexOf(piece16!);
-            // console.log(indexOfPieceClicked);
-            // console.log(indexOfPiece16);
-            const newOngoingGamePieces = [...ongoingGamePieces];
-            newOngoingGamePieces[indexOfPiece16] = pieceThatWasClicked;
-            newOngoingGamePieces[indexOfPieceClicked] = piece16!;
-            setOngoingGamePieces(newOngoingGamePieces);
-            setBoard(generateBoard(tilePositions, newOngoingGamePieces));
+            console.log(indexOfPieceClicked);
+            console.log(indexOfPiece16);
+
+            // if the index of peice 16 is in the array of legalmovesofclicked piece
+            if (legalMovesOfClickedPiece.to.includes(indexOfPiece16)) {
+                // console.log(" OOHHHOOO Empty space is in the possible moves of the piece");
+                const newOngoingGamePieces = [...ongoingGamePieces];
+                newOngoingGamePieces[indexOfPiece16] = pieceThatWasClicked;
+                newOngoingGamePieces[indexOfPieceClicked] = piece16!;
+                setOngoingGamePieces(newOngoingGamePieces);
+                setBoard(generateBoard(tilePositions, newOngoingGamePieces));
+                // console.log(newOngoingGamePieces);
+            } else {
+                // console.log("!!!That piece cannot move there"); 
+            }
+            
+            // const newOngoingGamePieces = [...ongoingGamePieces];
+            // newOngoingGamePieces[indexOfPiece16] = pieceThatWasClicked;
+            // newOngoingGamePieces[indexOfPieceClicked] = piece16!;
+            // setOngoingGamePieces(newOngoingGamePieces);
+            // setBoard(generateBoard(tilePositions, newOngoingGamePieces));
             // console.log(newOngoingGamePieces);
         } else {
             console.log("Piece 16 was clicked, do nothing");

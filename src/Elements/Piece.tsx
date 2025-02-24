@@ -33,6 +33,7 @@ export default function PieceElement({slot, getSlotClicked}: {slot: Slot, getSlo
     
 
     const handleClick = () => {
+        console.log(slot.position.id === slot.piece.id);
         getSlotClicked(slot);
     }
    
@@ -42,7 +43,7 @@ export default function PieceElement({slot, getSlotClicked}: {slot: Slot, getSlo
        <Rect key={slot.position.id + 40} width={100} height={100}
                                        x={slot.position.x}
                                        y={slot.position.y}
-                                       fill={"green"} />
+                                       fill={slot.position.id === slot.piece.id ? "green" : "yellow"} />
         <Image width={95} height={95} 
                 position={{x: placing.x, y: placing.y}}
                 image={image || undefined} onClick={handleClick}

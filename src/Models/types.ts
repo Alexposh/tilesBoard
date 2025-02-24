@@ -15,6 +15,6 @@ export interface Slot {
 }
 
 export interface LegalMove {
-    from: Position;
-    to: Position[];
+    from: number;
+    to: number[];
 }
