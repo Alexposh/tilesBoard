@@ -40,27 +40,6 @@ const generateBoard = (tilePositions: Position[], pieces: PieceModel[]) => {
     return updatedBoard;
 }
 
-// const legalMoves:LegalMove[] = [
-//     { from: 1, to: [2, 5] },
-//     { from: 4, to: [3, 8] },    
-//     { from: 13, to: [9, 14] },
-//     { from: 16, to: [12, 15] },
-
-//     { from: 2, to: [1, 3, 6] }, 
-//     { from: 3, to: [2, 2, 7] },
-//     { from: 5, to: [1, 6, 9] },
-//     { from: 8, to: [4, 7, 12] },
-//     { from: 9, to: [5, 10, 13] },
-//     { from: 12, to: [8, 11, 16] },
-//     { from: 14, to: [10, 13, 15] },
-//     { from: 15, to: [11, 14, 16] },
-
-//     { from: 6, to: [2, 5, 7, 10] }, 
-//     { from: 7, to: [3, 6, 8, 11] },
-//     { from: 10, to: [6, 9, 11, 14] },    
-//     { from: 11, to: [7, 10, 12, 15] },
-//     ];
-
     const legalMoves:LegalMove[] = [
         { from: 0, to: [1, 4] },
         { from: 3, to: [2, 7] },    
@@ -82,27 +61,6 @@ const generateBoard = (tilePositions: Position[], pieces: PieceModel[]) => {
         { from: 10, to: [6, 9, 11, 14] },
         ];
 
-const canMoveToPlaces:string[] = [  "from 1 can move to 2 and 5",
-                                    "from 4 can move to 3 and 8",
-                                    "from 13 can move to 9 and 14",
-                                    "from 16 can move to 12 and 15",
-
-                                    "from 2 can move to 1, 3 and 6",
-                                    "from 3 can move to 2, 4 and 7",                                    
-                                    "from 5 can move to 1, 6 and 9",
-                                    "from 8 can move to 4, 7,and 12",
-                                    "from 9 can move to 5, 10 and 13",
-                                    "from 12 can move to 8, 11 and 16",
-                                    "from 14 can move to 10, 13, 15",
-                                    "from 15 can move to 11, 14, 16",
-
-                                    "from 6 can move to 2, 5, 7 and 10",
-                                    "from 7 can move to 3, 6, 8 and 11",                                  
-                                    "from 10 can move to 6, 9, 11 and 14",
-                                    "from 11 can move to 7, 10, 12 and 15"                                  
-];
-
-
 const standardShufflePieces = () => {
     const shuffledPieces = [...initialPieces];
     for (let i = shuffledPieces.length - 1; i > 0; i--) {
@@ -122,9 +80,7 @@ export default function TileBoard() {
         const positionOfClickedPiece = slot.position.id -1;   
         console.log(positionOfClickedPiece); 
         const legalMovesOfClickedPiece = legalMoves.find((move) => move.from === positionOfClickedPiece);
-        legalMovesOfClickedPiece && console.log(legalMovesOfClickedPiece.to);
-
-       
+        legalMovesOfClickedPiece && console.log(legalMovesOfClickedPiece.to);       
         
         if (legalMovesOfClickedPiece && slot.piece.id !== 16) {
             const pieceThatWasClicked = slot.piece;
@@ -136,23 +92,15 @@ export default function TileBoard() {
 
             // if the index of peice 16 is in the array of legalmovesofclicked piece
             if (legalMovesOfClickedPiece.to.includes(indexOfPiece16)) {
-                // console.log(" OOHHHOOO Empty space is in the possible moves of the piece");
+                console.log(" OOHHHOOO Empty space is in the possible moves of the piece");
                 const newOngoingGamePieces = [...ongoingGamePieces];
                 newOngoingGamePieces[indexOfPiece16] = pieceThatWasClicked;
                 newOngoingGamePieces[indexOfPieceClicked] = piece16!;
                 setOngoingGamePieces(newOngoingGamePieces);
                 setBoard(generateBoard(tilePositions, newOngoingGamePieces));
-                // console.log(newOngoingGamePieces);
             } else {
-                // console.log("!!!That piece cannot move there"); 
-            }
-            
-            // const newOngoingGamePieces = [...ongoingGamePieces];
-            // newOngoingGamePieces[indexOfPiece16] = pieceThatWasClicked;
-            // newOngoingGamePieces[indexOfPieceClicked] = piece16!;
-            // setOngoingGamePieces(newOngoingGamePieces);
-            // setBoard(generateBoard(tilePositions, newOngoingGamePieces));
-            // console.log(newOngoingGamePieces);
+                console.log("!!!That piece cannot move there"); 
+            }           
         } else {
             console.log("Piece 16 was clicked, do nothing");
         }
@@ -168,13 +116,11 @@ export default function TileBoard() {
             <button onClick={shufflePieces} style={{ backgroundColor: "blue", margin: "10px" }}>Shuffle!</button>
             <Stage width={880} height={880}>
                 <Layer>
-                    <Rect x={100} y={100} width={450} height={450} fill="gray" />
-                    {board.map((slot) =>                      
-                                                       
+                    <Rect x={105} y={105} width={448} height={448} fill="gray" />
+                    {board.map((slot) =>                                                 
                             <Piece key={slot.position.id}
                                 slot={slot}
-                                getSlotClicked={handleClickOfPiece} />
-                        
+                                getSlotClicked={handleClickOfPiece} />                        
                     )}
                 </Layer>
             </Stage>

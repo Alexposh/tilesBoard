@@ -40,11 +40,11 @@ export default function PieceElement({slot, getSlotClicked}: {slot: Slot, getSlo
     
     return(
     <>
-       <Rect key={slot.position.id + 40} width={100} height={100}
+       <Rect key={slot.position.id + 25} width={108} height={108}
                                        x={slot.position.x}
                                        y={slot.position.y}
                                        fill={slot.position.id === slot.piece.id ? "green" : "yellow"} />
-        <Image width={95} height={95} 
+        <Image width={105} height={105} 
                 position={{x: placing.x, y: placing.y}}
                 image={image || undefined} onClick={handleClick}
                />
