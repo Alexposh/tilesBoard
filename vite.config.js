@@ -7,6 +7,11 @@ export default defineConfig({
   build: {
     outDir: 'dist', // Ensure Vite builds to "dist"
   },
+  // resolve: {
+  //   alias: {
+  //     'react-konva': 'react-konva/es/ReactKonva',
+  //   },
+  // },
   // server: {
   //   port: process.env.PORT || 3000, // Use Heroku's port
   // },
