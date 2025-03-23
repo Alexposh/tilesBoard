@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "heroku-postbuild": "npm run build",
-    "start": "vite"
+    "start": "serve dist -s"
   },
   "dependencies": {
     "konva": "^9.3.20",
