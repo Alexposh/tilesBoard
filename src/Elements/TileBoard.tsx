@@ -71,10 +71,16 @@ const standardShufflePieces = () => {
     return shuffledPieces;
 };
 
+
+const date = new Date();
+// const showTime = date.getHours() + ':' + date.getMinutes() + ":" + date.getSeconds();
 export default function TileBoard() {
 
     const [board, setBoard] = useState<Slot[]>(standardBoard);
     const [ongoingGamePieces, setOngoingGamePieces] = useState<PieceModel[]>(initialPieces);
+    const [startTime, setStartTime] = useState<number>();
+    const [endTime, setEndTime] = useState<number>();
+    const [timeTaken, setTimeTaken] = useState<number>(0);
 
     const handleClickOfPiece = (slot: Slot) => {
         const positionOfClickedPiece = slot.position.id -1;   
@@ -92,7 +98,7 @@ export default function TileBoard() {
 
             // if the index of peice 16 is in the array of legalmovesofclicked piece
             if (legalMovesOfClickedPiece.to.includes(indexOfPiece16)) {
-                console.log(" OOHHHOOO Empty space is in the possible moves of the piece");
+                // console.log(" OOHHHOOO Empty space is in the possible moves of the piece");
                 const newOngoingGamePieces = [...ongoingGamePieces];
                 newOngoingGamePieces[indexOfPiece16] = pieceThatWasClicked;
                 newOngoingGamePieces[indexOfPieceClicked] = piece16!;
@@ -108,12 +114,41 @@ export default function TileBoard() {
 
     const shufflePieces = () => {
         setOngoingGamePieces(standardShufflePieces());
-        setBoard(generateBoard(tilePositions, ongoingGamePieces));
+        console.log(ongoingGamePieces);
+        // setBoard(generateBoard(tilePositions, ongoingGamePieces));
     };
+
+    useEffect(() => {
+        setBoard(generateBoard(tilePositions, ongoingGamePieces));
+      }, [ongoingGamePieces]);
 
     return (
         <>
             <button onClick={shufflePieces} style={{ backgroundColor: "blue", margin: "10px" }}>Shuffle!</button>
+            {/* <h3>Started at:{showTime}</h3> */}
+            <button onClick={() => {
+                                    const startedAtTime = new Date();
+                                    setStartTime(startedAtTime.getTime());
+                                    console.log("timer started at:", startedAtTime.getHours() + ':' + startedAtTime.getMinutes() + ":" + startedAtTime.getSeconds());
+                                }
+                            } style={{ backgroundColor: "blue", margin: "10px" }}>Start time
+            </button>
+
+            <button onClick={() =>{
+                                if(startTime){
+                                    const completedAtTime = new Date();
+                                    setEndTime(completedAtTime.getTime());
+                                    setTimeTaken(endTime ? (endTime - startTime)/1000 : 0);
+                                    console.log("timer ended at:", completedAtTime.getHours() + ':' + completedAtTime.getMinutes() + ":" + completedAtTime.getSeconds());
+                                }
+                                } 
+                            } style={{ backgroundColor: "blue", margin: "10px" }}>Stop timer
+            </button>
+
+            {startTime && endTime && <h3>Time taken: {((endTime - startTime)/1000).toFixed(2)} seconds</h3>}
+            
+            {/* <h4>{date.getTime()}</h4> */}
+            <div className="countTime"></div>
             <Stage width={880} height={880}>
                 <Layer>
                     <Rect x={105} y={105} width={448} height={448} fill="gray" />
